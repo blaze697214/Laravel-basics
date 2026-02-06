@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Requests\CustomRequest;
+use App\Exceptions\CustomException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
@@ -68,6 +69,30 @@ Route::get('/logging',function(){
     Log::stack(['single','mycustomlog'])->info('Logged to couple of channels');
 });
 
-// Route::fallback(function(){
-//     return "URL does not exist<br>Fallback used";
-// });
+Route::get('/custom-exception',function() {
+    try{
+        return view('welcome',[
+            'data' => $missingvariable
+        ]);
+    }
+    catch(Throwable $exception){
+        throw new CustomException($exception->getMessage());
+    }
+});
+
+Route::get('/cache',function(){
+
+    // Cache::put('cacheForSeconds','Cache Value',$seconds = 10);
+    // Cache::put('cacheForMinutes','Cache Value',now()->addMinutes(10));
+
+
+    // dump(Cache::get('cacheForSeconds','default'));
+    // dump(Cache::get('cacheForMinutes','default'));
+
+});
+
+Route::redirect('/home','/');
+
+Route::fallback(function(){
+    return view('errors.404');
+});
