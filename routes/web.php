@@ -4,6 +4,7 @@ use App\Exceptions\CustomException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -149,6 +150,24 @@ Route::get('/filesystem',function(){
     dump(asset('storage/folder1/example.txt')); 
     //php artisan storage:link
     //php artisan storage:unlink
+
+});
+
+Route::get('/processes-asynchronous', function () { // http://localhost:8001/processes-asynchronous
+
+    $process = Process::start('pwd'); // __ASYNCHRONOUS__
+    while ($process->running()) {
+        echo 'we can do something here while process is running, for example run another process';
+    }
+    $result = $process->wait();
+    return $result->output();
+});
+
+Route::get('/processes-synchronous', function () { // http://localhost:8001/processes-synchronous
+
+    $result = Process::run('pwd'); // __SYNCHRONOUS__
+    return $result->output();
+    // Process::timeout(120)->run('bash import.sh'); //  default 60sec, max time: forever()->run('bash import.sh');
 
 });
 
