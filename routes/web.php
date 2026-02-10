@@ -82,13 +82,42 @@ Route::get('/custom-exception',function() {
 
 Route::get('/cache',function(){
 
+    // Cache::put('cacheRemember','value',600);
+    // Cache::forget('cacheRemember'); // delete cache by key
+
     // Cache::put('cacheForSeconds','Cache Value',$seconds = 10);
     // Cache::put('cacheForMinutes','Cache Value',now()->addMinutes(10));
+    // Cache::store('array')->put('cacheChooseDriver','value for cacheChooseDriver key',600); //Only valid for single request
+    $value = Cache::remember('cacheRemember', $seconds = 600, function () { // if key does not exist or is expired then put data to cache
+        echo 'not from cache';
+        return 'result of some operation, e.g. database query';
+    });
+    dump($value);
 
 
     // dump(Cache::get('cacheForSeconds','default'));
+    // dump(cache('cacheForSeconds','default'));
     // dump(Cache::get('cacheForMinutes','default'));
+    // dump(Cache::store('array')->get('cacheChooseDriver')); 
+    // $value = Cache::get('getFromCacheOrExecuteCallback', function () { // if key exists in cache then return its value, otherwise execute callback, but not store in cache
+    //     echo 'not from cache';
+    //     return 'result of some operation, e.g. database query';
+    // });
+    // dump($value);
+    
+    // Cache::forget('cacheFor10Minutes'); // delete cache by key
+    // Cache::flush(); // clear entire cache
 
+    if (Cache::has('cacheFor10Seconds')) {
+        dump('in cache there is entry with cacheFor10Seconds key');
+    }
+    
+});
+
+Route::middleware('cache.headers:public;max_age=262800;etag')->group(function(){
+    Route::get('/http-cache',function(){
+        return response('http-cache');// if response is changed then etag hash will be changed, as a result web browser will load new content from server
+    });
 });
 
 Route::redirect('/home','/');
