@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 Route::get('/', function () {
@@ -118,6 +119,37 @@ Route::middleware('cache.headers:public;max_age=262800;etag')->group(function(){
     Route::get('/http-cache',function(){
         return response('http-cache');// if response is changed then etag hash will be changed, as a result web browser will load new content from server
     });
+});
+
+Route::get('/filesystem',function(){
+
+    // Storage::put('example.txt','contents'); // store to the default disc: storage/app/example.txt
+    // Storage::disk('s3')->put('example.txt','Contens'); // store to the s3 disk
+    // Storage::disk('public')->put('folder1/example.txt','Contens'); // choose disk
+    // Storage::disk('public')->prepend('folder1/example.txt','Prepended text');
+    // Storage::disk('public')->append('folder1/example.txt','Appended text');
+
+    // dump('fg');
+    // return Storage::disk('public')->download('folder1/example.txt'); // if there is dump() before this line then it does not work
+
+    // $contents = Storage::disk('public')->get('folder1/example.txt');
+    // dump($contents);
+    // $res = Storage::disk('public')->copy('folder1/example.txt', 'folder2/example.txt');
+    // dump($res);
+    // $res = Storage::disk('public')->move('folder1/example.txt', 'folder2/example.txt');
+    // dump($res);
+    // $res = Storage::disk('public')->delete('folder2/example.txt');
+    // dump($res);
+
+    //File Properties
+
+    // dump(Storage::disk('public')->mimeType('folder1/example.txt'));
+    // dump(Storage::disk('public')->size('folder1/example.txt'));
+
+    dump(asset('storage/folder1/example.txt')); 
+    //php artisan storage:link
+    //php artisan storage:unlink
+
 });
 
 Route::redirect('/home','/');
