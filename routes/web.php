@@ -1,6 +1,8 @@
 <?php
 
 use App\Exceptions\CustomException;
+use App\Http\Controllers\ViewController;
+use App\Http\Requests\CustomRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -100,20 +102,20 @@ Route::get('/cache',function(){
     // dump(Cache::get('cacheForSeconds','default'));
     // dump(cache('cacheForSeconds','default'));
     // dump(Cache::get('cacheForMinutes','default'));
-    // dump(Cache::store('array')->get('cacheChooseDriver')); 
+    // dump(Cache::store('array')->get('cacheChooseDriver'));
     // $value = Cache::get('getFromCacheOrExecuteCallback', function () { // if key exists in cache then return its value, otherwise execute callback, but not store in cache
     //     echo 'not from cache';
     //     return 'result of some operation, e.g. database query';
     // });
     // dump($value);
-    
+
     // Cache::forget('cacheFor10Minutes'); // delete cache by key
     // Cache::flush(); // clear entire cache
 
     if (Cache::has('cacheFor10Seconds')) {
         dump('in cache there is entry with cacheFor10Seconds key');
     }
-    
+
 });
 
 Route::middleware('cache.headers:public;max_age=262800;etag')->group(function(){
@@ -147,7 +149,7 @@ Route::get('/filesystem',function(){
     // dump(Storage::disk('public')->mimeType('folder1/example.txt'));
     // dump(Storage::disk('public')->size('folder1/example.txt'));
 
-    dump(asset('storage/folder1/example.txt')); 
+    dump(asset('storage/folder1/example.txt'));
     //php artisan storage:link
     //php artisan storage:unlink
 
@@ -170,6 +172,8 @@ Route::get('/processes-synchronous', function () { // http://localhost:8001/proc
     // Process::timeout(120)->run('bash import.sh'); //  default 60sec, max time: forever()->run('bash import.sh');
 
 });
+
+Route::get('/database',[ViewController::class,'index']);
 
 Route::redirect('/home','/');
 
