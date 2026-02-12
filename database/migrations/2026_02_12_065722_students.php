@@ -15,6 +15,13 @@ return new class extends Migration
         Schema::create('students',function(Blueprint $table){
             $table->integer('id');
         });
+
+        Schema::create('post',function(Blueprint $table){
+            $table->increments('id');
+            $table->text('title');
+            $table->text('content');
+            $table->integer('user_id');
+        });
     }
 
     /**

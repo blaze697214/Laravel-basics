@@ -3,6 +3,7 @@
 use App\Exceptions\CustomException;
 use App\Http\Controllers\ViewController;
 use App\Http\Requests\CustomRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -173,7 +174,42 @@ Route::get('/processes-synchronous', function () { // http://localhost:8001/proc
 
 });
 
-Route::get('/database',[ViewController::class,'index']);
+Route::get('/database',[ViewController::class,'viewControllerdatabase']);
+
+Route::get('/eloquent-models',function(Request $request){
+    // create
+    $post = new Post();
+    $post->title = 'post title'; // can be from $request->name
+    $post->content = 'post content';
+    $post->user_id = 1;
+    dump($post->save());
+    // Post::create(['title' => 'post title', 'content' => 'post content', 'user_id' => 1]); // __MASS_ASSIGNMENT__
+
+    // // find, update
+    // $post = Post::find(1);
+    // $post->title = 'updated title';
+    // dump($post->save());
+
+    // // __MODEL_EVENTS__
+    // $post = Post::withoutEvents(function () {
+    //     $post = Post::find(1);
+    //     $post->title = 'updated title2';
+    //     return $post->save();
+    // });
+    // dump($post);
+
+    // // get all
+    // dump(Post::get());
+    // dump(Post::withTrashed()->get());
+
+    // // delete
+    // $post = Post::find(2);
+    // dump($post->delete());
+    // Post::truncate();
+    // Post::destroy([3,4,5,6]);
+
+    // dump(Post::olderThanYear()->orderBy('created_at')->get()); // query scope
+});
 
 Route::redirect('/home','/');
 
