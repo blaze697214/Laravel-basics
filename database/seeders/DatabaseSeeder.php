@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Passport;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,13 +23,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        for($i=0;$i<10;$i++){
-            DB::table('users')->insert([
-            'name'=> fake()->name(),
-            'email' => fake()->email(),
-            'password' => fake()->password()
-            ]);
-        }
+        // for($i=0;$i<10;$i++){
+        //     DB::table('users')->insert([
+        //     'name'=> fake()->name(),
+        //     'email' => fake()->email(),
+        //     'password' => fake()->password()
+        //     ]);
+        // }
+
+        User::factory(5)
+            ->has(Passport::factory())
+            ->create();
 
     }
 }

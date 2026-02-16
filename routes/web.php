@@ -4,6 +4,7 @@ use App\Exceptions\CustomException;
 use App\Http\Controllers\ViewController;
 use App\Http\Requests\CustomRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -178,17 +179,19 @@ Route::get('/database',[ViewController::class,'viewControllerdatabase']);
 
 Route::get('/eloquent-models',function(Request $request){
     // create
-    $post = new Post();
-    $post->title = 'post title'; // can be from $request->name
-    $post->content = 'post content';
-    $post->user_id = 1;
-    dump($post->save());
+    // $post = new Post();
+    // // $post->id =1;
+    // $post->title = 'post title'; // can be from $request->name
+    // $post->content = 'post content';
+    // $post->user_id = 1;
+    // // $post->timestamps();
+    // dump($post->save());
     // Post::create(['title' => 'post title', 'content' => 'post content', 'user_id' => 1]); // __MASS_ASSIGNMENT__
 
     // // find, update
-    // $post = Post::find(1);
-    // $post->title = 'updated title';
-    // dump($post->save());
+    $post = Post::find(2);
+    $post->title = 'updated title';
+    dump($post->save());
 
     // // __MODEL_EVENTS__
     // $post = Post::withoutEvents(function () {
@@ -209,6 +212,10 @@ Route::get('/eloquent-models',function(Request $request){
     // Post::destroy([3,4,5,6]);
 
     // dump(Post::olderThanYear()->orderBy('created_at')->get()); // query scope
+});
+
+Route::get('/one-to-one',function(){
+    dump(User::find(2)->passport->issuing_country);
 });
 
 Route::redirect('/home','/');
