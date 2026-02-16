@@ -3,6 +3,7 @@
 use App\Exceptions\CustomException;
 use App\Http\Controllers\ViewController;
 use App\Http\Requests\CustomRequest;
+use App\Models\Passport;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -216,6 +217,15 @@ Route::get('/eloquent-models',function(Request $request){
 
 Route::get('/one-to-one',function(){
     dump(User::find(2)->passport->issuing_country);
+    dump(Passport::find(4)->user->name);
+});
+
+Route::get('/quering-eloquent-select-basics',function(){
+    // dump(User::find(1));
+    // dump(User::findOrFail(100));
+    // dump(User::select('name','email')->find(1));
+    // dump(User::where('email','like','maya%')->first());
+    dump(User::where('email','like','maya%')->first()->email);
 });
 
 Route::redirect('/home','/');
