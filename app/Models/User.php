@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function passport(){
         return $this->hasOne(Passport::class);
     }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 }

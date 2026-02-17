@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Passport;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(5)
             ->has(Passport::factory())
+            ->has(Post::factory(5))
             ->create();
 
     }

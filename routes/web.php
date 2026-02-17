@@ -220,6 +220,17 @@ Route::get('/one-to-one',function(){
     dump(Passport::find(4)->user->name);
 });
 
+Route::get('/one-to-many',function(Request $request){
+    dump(User::find(1)->posts()->get());
+    dump(User::find(1)->posts);
+
+    dump(User::find(1)->posts()->where('title', 'What happened to.')->first()); // get();
+    // dump($request->user()->posts()->get());
+
+    dump(Post::find(1)->user->name);
+    dump(Post::whereBelongsTo(User::where('id', '>', 3)->get())->get());
+});
+
 Route::get('/quering-eloquent-select-basics',function(){
     // dump(User::find(1));
     // dump(User::findOrFail(100));
