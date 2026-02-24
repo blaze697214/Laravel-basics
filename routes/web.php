@@ -7,7 +7,9 @@ use App\Models\Passport;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Route;
@@ -238,6 +240,61 @@ Route::get('/quering-eloquent-select-basics',function(){
     // dump(User::where('email','like','maya%')->first());
     dump(User::where('email','like','maya%')->first()->email);
 });
+
+Route::get('/login',function(){
+    return view('form.login-form');
+})->name('login');
+
+Route::get('/register',function(){
+    return view('form.register');
+})->name('register');
+
+Route::post('/register-post',function(Request $request){
+    
+    $request->validate([
+        'email' => ['email','max:20'],
+        'password' => ['required','min:5']
+    ]);
+
+    User::create([
+        'email' => $request->input('email'),
+        'password' => Hash::make($request->input('password'))
+    ]);
+
+    dump('User Created');
+
+})->name('register-post');
+
+Route::post('/login-post',function(Request $request){
+
+    $credentials = $request->validate([
+        'email' => ['email','max:20'],
+        'password' => ['required','min:5']
+    ]);
+
+    if(Auth::attempt($credentials)){
+        $request->session()->regenerate();
+        return redirect()->intended(route('protect'));
+    }
+
+    return back()->withErrors([
+        'email' => 'invalid',
+        'password' => 'inavlai'
+    ]);
+
+})->name('login-post');
+
+Route::get('/logout',function(Request $request){
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/');
+});
+
+Route::get('/authentication',function(){
+    dump('Protected route');
+    return view('form.logout');
+})->middleware('auth')->name('protect');
 
 Route::redirect('/home','/');
 
