@@ -239,6 +239,31 @@ Route::get('/quering-eloquent-select-basics',function(){
     dump(User::where('email','like','maya%')->first()->email);
 });
 
+Route::get('/tailwind-css/grid-flex',function(){
+    return view('tailwind.grid-flex');
+});
+
+Route::get('/tailwind-css/header-footer',function(){
+    return view('tailwind.header-footer');
+});
+
+Route::get('/tailwind-css/positioning',function(){
+    return view('tailwind.positioning');
+});
+
+Route::get('/tailwind-css/hover-focus',function(){
+    return view('tailwind.hover-focus');
+});
+
+Route::get('/tailwind-css/responsive',function(){
+    return view('tailwind.responsive');
+});
+
+Route::get('/tailwind-css/setting-color-rotation',function(){
+    return view('tailwind.setting-color-rotation');
+})->name('hel');
+
+
 Route::redirect('/home','/');
 
 Route::fallback(function(){
